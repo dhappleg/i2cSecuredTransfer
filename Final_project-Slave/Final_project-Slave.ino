@@ -7,6 +7,7 @@
  *  This is the receiver unit for the secure data control
  *  of a motor. Key must be received for authentication. 
  */
+ 
 #include <Wire.h>
 #include "RC4.h"
 
@@ -45,7 +46,7 @@ void receiveEvent(int howMany) {
 }
 
 /*
- * Declare the I2C connection on pin 8 (A0) and 
+ * Declare the I2C connection as device id 8 and 
  * setup the function to read and store the event 
  * data in a character array. 
  * 

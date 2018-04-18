@@ -4,8 +4,10 @@
  * Updated: 04/17/2018
  * 
  * About: 
- *  This is the sender unit for 
+ *  This is the sender unit for an I2C secure communication protocol 
+ *  using RC4 encryption. 
  */
+ 
 #include <Wire.h>
 #include "RC4.h"
 
@@ -30,7 +32,7 @@ String encryptString(String buf) {
 }
 
 /*
- * 
+ * Used to write strings to the i2c bus slave device. 
  */
 int writeData(String buf) {
   Wire.beginTransmission(8); 
@@ -40,7 +42,7 @@ int writeData(String buf) {
 }
 
 /*
- * 
+ * Initializes the serial baudrate to 9600 and declares and I2C connection. 
  */
 void setup() {
   Serial.begin(9600); 
@@ -48,7 +50,7 @@ void setup() {
 }
 
 /*
- * 
+ * Encrypt the string and send it to the slave device address 8. 
  */
 void loop() {
   ret = encryptString("Test String"); 
