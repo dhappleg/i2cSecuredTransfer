@@ -31,18 +31,54 @@ String encryptString(String buf) {
   return crypt.omni_crypt(buf, __KEY__); 
 }
 
+void clearBuf() {
+  int i = 0; 
+  for (i=0; i<256; i++) {
+    buf[i] = 0; 
+  }
+}
+
+int checkIfValid(String buf) {
+  int i = 0; 
+  String ret = ""; 
+  for(i=0; i<__KEY__.length(); i++) {
+    if (buf[i] != __KEY__[i]) {
+      return 0; 
+    }
+  }
+  return 1; 
+}
+
+String stripKey(String buf){
+  int i, j =0; 
+  char ret[256]; 
+  for(i=__KEY__.length(); i<buf.length(); i++) {
+    ret[j] = buf[i]; 
+    j++;
+  }
+  return ret; 
+}
+
 /*
  * 
  */
 void receiveEvent(int howMany) {
-  int i = 0; 
+  int i = 0;
+  clearBuf(); 
   while (0 < Wire.available()) {
     char c = Wire.read();
     buf[i++] = c; 
-    Serial.print(c);
+    //Serial.print(c);
   }
   Serial.println(""); 
-  Serial.println(decryptString(buf)); 
+  if(checkIfValid(decryptString(buf))){
+    //buf = stripKey(decryptString(buf)); 
+     Serial.println(decryptString(buf)); 
+  } else {
+    Serial.println("Invalid"); 
+  }
+  
+  //Serial.println(decryptString(buf)); 
 }
 
 /*

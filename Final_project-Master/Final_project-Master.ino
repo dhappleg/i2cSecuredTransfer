@@ -31,6 +31,20 @@ String encryptString(String buf) {
   return crypt.omni_crypt(buf, __KEY__); 
 }
 
+void sendValid(String buf) {
+  String ret = encryptString(buf); 
+  Serial.println("Sending valid data"); 
+  Serial.println(buf); 
+  writeData(ret); 
+}
+
+void sendInvalid(String buf) {
+  //String ret = encryptString(buf); 
+  Serial.println("Sending invalid data"); 
+  Serial.println(buf); 
+  writeData(buf); 
+}
+
 /*
  * Used to write strings to the i2c bus slave device. 
  */
@@ -53,8 +67,11 @@ void setup() {
  * Encrypt the string and send it to the slave device address 8. 
  */
 void loop() {
-  ret = encryptString("Test String"); 
-  Serial.println(ret); 
-  writeData(encryptString("Test String"));
+  //ret = encryptString("Test String"); 
+  //Serial.println(ret); 
+  //writeData(encryptString("Test String"));
+  sendValid(__KEY__ + "Valid Data"); 
   delay(500);
+  sendInvalid("Invalid Data"); 
+  delay(500); 
 }
