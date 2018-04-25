@@ -1,7 +1,7 @@
 /*
  * Author: Drew Applegath 
  * Course: EE4723 - Network Security
- * Updated: 04/17/2018
+ * Updated: 04/24/2018
  * 
  * About: 
  *  This is the receiver unit for the secure data control
@@ -31,6 +31,10 @@ String encryptString(String buf) {
   return crypt.omni_crypt(buf, __KEY__); 
 }
 
+/*
+ * Clear the buffer holding the string, so that new data can be
+ * stored in it without error. 
+ */
 void clearBuf() {
   int i = 0; 
   for (i=0; i<256; i++) {
@@ -38,6 +42,12 @@ void clearBuf() {
   }
 }
 
+/*
+ * Check an input string for valid data, in this case
+ * the valid data contains the key in the front, but in 
+ * an implementation, there should be a nonce placed in 
+ * the valid field before the json data. 
+ */
 int checkIfValid(String buf) {
   int i = 0; 
   String ret = ""; 
@@ -49,6 +59,10 @@ int checkIfValid(String buf) {
   return 1; 
 }
 
+/*
+ * Remove the key from the front of the string. 
+ * This is only used for testing. 
+ */
 String stripKey(String buf){
   int i, j =0; 
   char ret[256]; 
@@ -60,7 +74,7 @@ String stripKey(String buf){
 }
 
 /*
- * 
+ * Get the input data and store it to the buffer. 
  */
 void receiveEvent(int howMany) {
   int i = 0;
@@ -68,17 +82,13 @@ void receiveEvent(int howMany) {
   while (0 < Wire.available()) {
     char c = Wire.read();
     buf[i++] = c; 
-    //Serial.print(c);
   }
   Serial.println(""); 
-  if(checkIfValid(decryptString(buf))){
-    //buf = stripKey(decryptString(buf)); 
+  if(checkIfValid(decryptString(buf))){ 
      Serial.println(decryptString(buf)); 
   } else {
     Serial.println("Invalid"); 
   }
-  
-  //Serial.println(decryptString(buf)); 
 }
 
 /*
